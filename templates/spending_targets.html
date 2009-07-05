@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="post">
+<table>
+{% for category_target in category_targets %}
+  {% cycle 'red' 'green' 'blue' 'yellow' 'orange' 'purple' as colors %}
+  <tr>
+    <td>{{ category_target.category.name }}</td>
+    <td><input type="text" name="{{ category_target.category.name }}" value="{{ category_target.target.amount }}"></td>
+    <td style="width:300px;"><div style="background-color: {{ colors }}; color: {{ colors }}; width: {% widthratio category_target.target.amount 600 100 %}%;">
+    {% if category_target.target.amount %}-{% endif %}
+    </div></td>
+  <tr>
+{% endfor %}
+</table>
+<input type="submit" value="Submit!">
+</form>
+{% endblock %}

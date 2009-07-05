@@ -1,0 +1,9 @@
+<html>
+<head>
+</head>
+<body>
+{% if user.username %}logged in as {{ user.username }}.  <a href="{% url logout %}">logout</a>{% endif %}
+{% block content %}
+{% endblock %}
+</body>
+</html>

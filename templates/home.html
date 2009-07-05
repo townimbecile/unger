@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ month }}/{{ year }}
+<br>
+<table border="1">
+<tr><td></td>
+{% for header in headers %}
+<td>{{ header }}</td>
+{% endfor %}
+</tr>
+{% for entries in entry_sets %}
+<tr>
+<td>{{ entries.heading }}</td>
+{% for entry in entries.values %}
+<td>{{ entry }}</td>
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
+<br>
+<form method="post">
+{% for category in categories %}
+<input type="text" name="{{ category.name }}"> {{ category.name }}<br>
+{% endfor %}
+<input type="submit" value="Submit!">
+</form>
+
+<h3>Tips</h3>
+<ul>
+	<li>For now, please hold on to your receipts in case something happens</li>
+	<li>Enter in as many expenses at once as you like!  You can always add more later.</li>
+	<li>Have multiple expenses in the same category?  Separate them by spaces.</li>
+	<li>Make a mistake?  Fix it by entering a negative value!</li>
+	<li>Make an anti-mistake?  Fix it by entering a positive value!</li>
+	<li>For the love of money, I still don't care about taxes.  If your entire receipt is toward a single category, save yourself the headache and enter the entire total once.</li>
+	<li>The answer to all your complaints is "It will get better soon."</li>
+</ul>
+{% endblock %}
