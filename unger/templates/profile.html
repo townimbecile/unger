@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script type="text/javascript">
+  function checkPassword() {
+    if (document.getElementById("password1").value==document.getElementById("password2").value) {
+      return true;
+    } else {
+      alert("Passwords must match!");
+      return false;
+    }
+  }
+</script>
+<form method="post" onsubmit="return checkPassword()">
+<table>
+  <tr><td>Enter password once:</td><td><input type="password" name="password1" id="password1"/></td></tr>
+  <tr><td>Please re-enter password, as is the custom:</td><td><input type="password" name="password2" id="password2"/></td></tr>
+  <tr><td></td><td><input type="submit" value="Submit!"/></td></tr>
+</table>
+</form>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% load get_range %}
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/site_media/unger/css/base.css" />
+{% block extrahead %}
+{% endblock %}
+</head>
+<body>
+{% if user.username %}logged in as {{ user.username }}.  <a href="{% url logout %}">logout</a>{% endif %}
+{% block left_navbar %}
+  <div id="side_bar">
+    <ul>
+      {% for link in nav_links %}
+        <li><a href="{{ link.href }}">{{ link.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
+  <div id="content_pane">
+{% block content %}
+{% endblock %}
+  </div>
+</body>
+</html>

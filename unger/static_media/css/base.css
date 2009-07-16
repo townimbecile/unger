@@ -1,0 +1,57 @@
+body {
+  background-color: #A48C75;
+  color: #D4D4BF;
+}
+
+input {
+  background-color: #BFD4D4;
+}
+
+div#side_bar {
+  float: left;
+  background-color: #7575A3;
+  width: 15%;
+  min-height:600px;
+}
+
+div#side_bar ul {
+  list-style-type: none;
+}
+
+div#side_bar ul a {
+  color: #E4E495;
+  text-decoration: none;
+}
+
+div#side_bar ul a:hover {
+  text-decoration: underline;
+}
+
+div#side_bar ul a:visited {
+  color: #E4E495;
+}
+
+div.horizontal_spacer {
+  float: left;
+  margin-left: 1%;
+  background-color: #A48C75;
+}
+
+div.vertical_spacer {
+  padding-top: 1%;
+  background-color: #A48C75;
+}
+
+div#content_pane {
+  float: left;
+  width: 80%;
+  padding-left: 5%;
+} 
+
+tr.even_row {
+  background-color: #a78c76;
+}
+
+tr.odd_row {
+ background-color: #92765d;
+}

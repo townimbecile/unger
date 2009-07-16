@@ -1,16 +1,28 @@
 {% extends "base.html" %}
 
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="/site_media/unger/css/anytimec.css" />
+<script type="text/javascript" src="/site_media/unger/js/prototype-1.6.0.3.js"></script>
+<script type="text/javascript" src="/site_media/unger/js/anytimec.js"></script>
+{% endblock %}
+
 {% block content %}
-{{ month }}/{{ year }}
+<form method="get">
+<input type="text" value="{{ month }}/{{ year }}" id="date_chooser" name="month"/>
+<input type="submit" value="go"/>
+<script type="text/javascript">
+  new ATWidget("date_chooser", { format: "%m/%Y" });
+</script>
+</form>
 <br>
-<table border="1">
-<tr><td></td>
+<table>
+<tr class="odd_row"><td></td>
 {% for header in headers %}
 <td>{{ header }}</td>
 {% endfor %}
 </tr>
 {% for entries in entry_sets %}
-<tr>
+<tr class="{% cycle "even_row" "odd_row" %}">
 <td>{{ entries.heading }}</td>
 {% for entry in entries.values %}
 <td>{{ entry }}</td>

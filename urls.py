@@ -1,12 +1,19 @@
 from django.conf.urls.defaults import *
-from views import *
+
+# Uncomment the next two lines to enable the admin:
+from django.contrib import admin
+admin.autodiscover()
 
 urlpatterns = patterns('',
     # Example:
     # (r'^web/', include('web.foo.urls')),
-    url(r'expenses/(?P<year>\d{4})/(?P<month>\d{1,2})/$', home),
-    url(r'expenses/$', home, name = "home"),
-    url(r'login/$', user_login, name = "login"),
-    url(r'logout/$', logout_user, name = "logout"),
-    url(r'targets/$', spending_target, name = "spending_target"),
+
+    # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
+    # to INSTALLED_APPS to enable admin documentation:
+    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+    # Uncomment the next line to enable the admin:
+    (r'^admin/(.*)', admin.site.root),
+    (r'^unger/', include('dberger_web.unger.urls')),
+                                             
 )

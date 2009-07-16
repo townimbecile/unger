@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from datetime import datetime, date, timedelta
 from sets import Set
@@ -32,11 +33,14 @@ class EntrySet(object):
     self.values = values
 
 @login_required
-@render_to("home.html")
-def home(request,
+@render_to("expenses.html")
+def expenses(request,
          year=datetime.utcnow().year,
          month=datetime.utcnow().month
          ):
+  if request.GET.get("month"):
+    month,year = request.GET.get("month").split("/")
+    return HttpResponseRedirect(reverse("month_expenses",kwargs={"month":month,"year":year}))
   year,month = int(year),int(month)
   first_of_month = date(year,month,1)
   last_of_month = date(year + (month//12),(month%12)+1,1)-timedelta(1)
@@ -54,8 +58,7 @@ def home(request,
           partner = profile,
           category = category,
           amount = number,
-          month_incurred = month,
-          year_incurred = year,
+          date_incurred = date.today(),
         )
         expense.save()
 
@@ -91,8 +94,11 @@ def home(request,
   ordered_partner_totals = [partner_totals[partner.user.username] for partner in partners]
   total_total = sum(ordered_partner_totals)
   entry_sets.append(EntrySet("Gross Contribution",ordered_partner_totals + [total_total]))
-  ordered_diffs = [contributed - (total_total / len(partners)) for contributed in ordered_partner_totals]
-  entry_sets.append(EntrySet("Net Contribution",ordered_diffs))
+  ordered_diffs = (contributed - (total_total / len(partners)) for contributed in ordered_partner_totals)
+  rounded_diffs = [round(diff,2) for diff in ordered_diffs]
+  if len(rounded_diffs)>0:
+    rounded_diffs[0] -= sum(rounded_diffs)
+  entry_sets.append(EntrySet("Net Contribution",rounded_diffs))
   return {
     'year':year,
     'month':month,
@@ -117,8 +123,11 @@ def spending_target(request):
     post = request.POST
     for category in Category.objects.all():
       value = post.get(category.name,False)
-      if not value: continue
       target = get_object_or_None(Target, category = category)
+      if not value:
+        if target:
+          target.delete()
+        continue
       if not target:
         target = Target(category = category)
       target.amount = value
@@ -133,3 +142,15 @@ def spending_target(request):
   return {
   	"category_targets":	category_targets,
 	}
+
+@login_required
+@render_to("profile.html")
+def edit_profile(request):
+  user = request.user
+  profile = user.get_profile()
+  if request.method == "POST":
+    if request.POST.get("password1") and request.POST.get("password2"):
+      if request.POST["password1"] == request.POST["password2"]:
+        user.set_password(request.POST["password1"])
+        user.save()
+  return {}

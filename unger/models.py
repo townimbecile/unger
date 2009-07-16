@@ -85,11 +85,10 @@ class Expense(models.Model):
   date_incurred = models.DateField(auto_now_add=True)
 
   def __unicode__(self):
-    return "%s -- %s : %s (%s, %s)"%(
+    return "%s -- %s : %s (%s)"%(
       self.partner,
       self.category,
       self.amount,
-      self.get_month_incurred_display(),
-      self.year_incurred,
+      self.date_incurred,
       )
 
